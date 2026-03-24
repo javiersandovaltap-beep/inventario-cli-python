@@ -1,41 +1,104 @@
-Sistema de Gestión de Librería - Autores Chilenos
-Sistema de gestión de datos desarrollado en Python,segun los requerimientos de la segunda version del ABP del modulo 3. El sistema permite gestionar el inventario de una librería especializada en autores chilenos, aplicando estructuras de control, funciones y módulos.
+# 📚 Librería Autores Chilenos
 
-Descripción del Sistema
-Este software permite la administración eficiente de un catálogo de libros, ofreciendo funcionalidades para listar, buscar, agregar, modificar y eliminar registros. Además, incluye un módulo de reportes estadísticos y validaciones de negocio restrictivas (autores permitidos).
+Sistema de gestión de inventario desarrollado en **Python puro**, sin frameworks ni librerías externas. Permite administrar el catálogo de una librería especializada en literatura chilena, con persistencia de datos en JSON y una interfaz de consola interactiva.
 
-El desarrollo se centra en la modularización, priorizando un código limpio, legible y eficiente.
+---
 
-Estructuras de Datos Utilizadas
-El proyecto implementa las estructuras fundamentales de Python para la manipulación de información:
+## 🖥️ Demo
 
-Listas (list): Utilizada como base de datos principal (libros_db) para almacenar colecciones mutables de libros.
-Diccionarios (dict): Empleado para representar cada entidad de "Libro", mapeando claves como id, titulo, autor, isbn, precio y stock a sus valores correspondientes.
-Tuplas (tuple):
-Para almacenar los datos iniciales precargados (DATOS_INICIALES), asegurando inmutabilidad.
-Para la lista de validación de autores chilenos (AUTORES_CHILENOS).
-Conjuntos (set): Utilizados para garantizar la unicidad de identificadores (ids_set) y códigos ISBN (isbns_set), evitando duplicados en el sistema.
-Funcionalidades Implementadas
-El sistema ofrece un menú interactivo con las siguientes opciones:
+```
+========================================
+    LIBRERÍA AUTORES CHILENOS 📚
+========================================
+  1. Listar libros
+  2. Agregar libro
+  3. Buscar libro
+  4. Actualizar stock
+  5. Eliminar libro
+  6. Generar reporte
+  0. Salir
+----------------------------------------
 
-Listar libros: Muestra en pantalla el inventario actual con formato tabular y moneda.
-Agregar libro: Permite ingresar nuevos libros validando que el autor sea chileno y que el ISBN sea único. Utiliza recursividad para la generación automática de IDs.
-Buscar libro: Filtra el inventario por título o ISBN de forma insensible a mayúsculas/minúsculas.
-Actualizar stock: Gestiona entradas y salidas de mercancía, validando stock disponible antes de registrar una venta.
-Eliminar libro: Permite borrar registros del sistema con confirmación de usuario.
-Generar reporte: Calcula y muestra estadísticas en tiempo real (valor total del inventario, títulos con bajo stock).
-Requisitos y Ejecución
-Este proyecto fue desarrollado con Python 3.14.
+       REPORTE DE INVENTARIO
+=============================================
+  Títulos en catálogo  : 30
+  Unidades totales     : 218
+  Valor del inventario : $  4.345.000
+  Autor con más títulos: Pablo Neruda
+  Títulos bajo stock   : 4 (menos de 5 uds.)
+=============================================
+```
 
-Clonar o descargar el repositorio.
-Asegurarse de tener la siguiente estructura de carpetas:
-/LibreriaAutoresChilenos    ├── main.py    └── modulos/        ├── __init__.py        ├── datos_basicos.py        ├── menu.py        ├── validaciones.py        ├── funciones_utiles.py        └── gestion_datos.py
-Ejecutar el archivo principal desde la terminal:
+---
+
+## ✨ Funcionalidades
+
+- **Listar libros** — tabla formateada con ISBN, título, autor, precio y stock
+- **Agregar libro** — validación de autor chileno, ISBN único y campos obligatorios
+- **Buscar libro** — por ISBN exacto o coincidencia parcial de título
+- **Actualizar stock** — registra entradas y ventas con validación de stock disponible
+- **Eliminar libro** — con confirmación previa del usuario
+- **Generar reporte** — estadísticas en tiempo real: valor total, stock crítico y autor destacado
+- **Persistencia JSON** — los datos se guardan automáticamente en `data/libros.json` tras cada operación
+
+---
+
+## 🏗️ Estructura del Proyecto
+
+```
+LibreriaAutoresChilenos/
+├── main.py                  # Punto de entrada y bucle principal
+├── README.md
+├── .gitignore
+├── data/
+│   └── libros.json          # Generado automáticamente en la primera ejecución
+└── modulos/
+    ├── __init__.py
+    ├── datos_basicos.py     # 30 libros precargados (tupla inmutable)
+    ├── menu.py              # Presentación y captura del menú
+    ├── validaciones.py      # Catálogo de autores chilenos y validaciones
+    ├── funciones_utiles.py  # Inputs validados y generador recursivo de IDs
+    ├── gestion_datos.py     # Lógica CRUD completa
+    └── persistencia.py      # Lectura y escritura en JSON
+```
+
+---
+
+## 🧠 Conceptos Aplicados
+
+| Concepto | Implementación |
+|---|---|
+| Modularización | 6 módulos con responsabilidad única |
+| Estructuras de datos | `list`, `dict`, `tuple`, `set` |
+| Funciones recursivas | `generar_id_recursivo()` en `funciones_utiles.py` |
+| Persistencia | Serialización/deserialización JSON con módulo `json` |
+| Validaciones | Autor chileno, ISBN único, rangos numéricos |
+| PEP 8 | Nombres, espaciado, longitud de línea |
+| Docstrings | Todas las funciones documentadas con Args y Returns |
+
+---
+
+## ▶️ Instalación y Ejecución
+
+**Requisitos:** Python 3.8 o superior. No requiere dependencias externas.
+
+```bash
+# 1. Clonar el repositorio
+git clone https://github.com/javiersandovaltap-beep/libreria-autores-chilenos-python.git
+
+# 2. Entrar a la carpeta
+cd libreria-autores-chilenos-python
+
+# 3. Ejecutar
 python main.py
-Tecnologías Utilizadas
-Lenguaje: Python 3.
-IDE sugerido: Visual Studio Code.
-Estándar: PEP 8 (Style Guide for Python Code).
-Librerías: Solo librerías estándar (sys).
-Autor
-Javier Sandoval Tapia 
+```
+
+En la **primera ejecución** se crea automáticamente `data/libros.json` con 30 libros precargados. A partir de la segunda ejecución, el sistema carga el estado guardado.
+
+---
+
+## 👤 Autor
+
+**Javier Sandoval Tapia**  
+[GitHub](https://github.com/javiersandovaltap-beep)
+
