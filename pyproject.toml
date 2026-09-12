@@ -1,0 +1,75 @@
+[project]
+name = "inventario-cli-python"
+version = "0.3.0"
+description = "Sistema de gestión de inventario multipropósito en Python puro con presets de dominio"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.11"
+authors = [{ name = "Javier Sandoval Tapia" }]
+keywords = ["inventario", "cli", "multiproposito", "presets"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+    "ruff>=0.6",
+    "mypy>=1.11",
+    "bandit>=1.7",
+    "pre-commit>=3.8",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/javiersandovaltap-beep/inventario-cli-python"
+"Repository" = "https://github.com/javiersandovaltap-beep/inventario-cli-python"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["modulos", "presets"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+extend-exclude = ["data/"]
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "N", "B", "C4", "SIM", "UP", "D"]
+ignore = ["D100", "D104", "D203", "D213"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["D"]
+"presets/libreria_chilena.py" = ["D101"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+addopts = "-v --tb=short --strict-markers --cov=modulos --cov=presets --cov-report=term-missing"
+markers = [
+    "smoke: tests básicos de funcionalidad",
+    "unit: tests unitarios",
+    "edge: casos límite",
+    "integration: tests con mock de persistencia",
+]
+
+[tool.mypy]
+python_version = "3.11"
+strict = false
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+
+[tool.bandit]
+exclude_dirs = ["tests", "data"]
+skips = ["B101"]
