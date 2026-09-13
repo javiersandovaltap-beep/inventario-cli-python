@@ -1,242 +1,302 @@
 [
   {
     "id": 1,
-    "titulo": "Veinte poemas de amor",
-    "autor": "Pablo Neruda",
-    "isbn": "ISBN001",
+    "sku": "ISBN001",
+    "nombre": "Veinte poemas de amor",
     "precio": 12000.0,
-    "stock": 15
+    "stock": 15,
+    "atributos": {
+      "autor": "Pablo Neruda"
+    }
   },
   {
     "id": 2,
-    "titulo": "La casa de los espíritus",
-    "autor": "Isabel Allende",
-    "isbn": "ISBN002",
+    "sku": "ISBN002",
+    "nombre": "La casa de los espiritus",
     "precio": 18500.0,
-    "stock": 10
+    "stock": 10,
+    "atributos": {
+      "autor": "Isabel Allende"
+    }
   },
   {
     "id": 3,
-    "titulo": "El viejo que leía novelas de amor",
-    "autor": "Luis Sepúlveda",
-    "isbn": "ISBN003",
+    "sku": "ISBN003",
+    "nombre": "El viejo que leia novelas de amor",
     "precio": 14000.0,
-    "stock": 8
+    "stock": 8,
+    "atributos": {
+      "autor": "Luis Sepulveda"
+    }
   },
   {
     "id": 4,
-    "titulo": "Ardiente paciencia",
-    "autor": "Antonio Skármeta",
-    "isbn": "ISBN004",
+    "sku": "ISBN004",
+    "nombre": "Ardiente paciencia",
     "precio": 9900.0,
-    "stock": 20
+    "stock": 20,
+    "atributos": {
+      "autor": "Antonio Skarmeta"
+    }
   },
   {
     "id": 5,
-    "titulo": "La muerte y la doncella",
-    "autor": "Ariel Dorfman",
-    "isbn": "ISBN005",
+    "sku": "ISBN005",
+    "nombre": "La muerte y la doncella",
     "precio": 11000.0,
-    "stock": 5
+    "stock": 5,
+    "atributos": {
+      "autor": "Ariel Dorfman"
+    }
   },
   {
     "id": 6,
-    "titulo": "Residencia en la tierra",
-    "autor": "Pablo Neruda",
-    "isbn": "ISBN006",
+    "sku": "ISBN006",
+    "nombre": "Residencia en la tierra",
     "precio": 15000.0,
-    "stock": 12
+    "stock": 12,
+    "atributos": {
+      "autor": "Pablo Neruda"
+    }
   },
   {
     "id": 7,
-    "titulo": "Historia de una gaviota y del gato...",
-    "autor": "Luis Sepúlveda",
-    "isbn": "ISBN007",
+    "sku": "ISBN007",
+    "nombre": "Historia de una gaviota y del gato...",
     "precio": 13000.0,
-    "stock": 9
+    "stock": 9,
+    "atributos": {
+      "autor": "Luis Sepulveda"
+    }
   },
   {
     "id": 8,
-    "titulo": "Más allá del invierno",
-    "autor": "Isabel Allende",
-    "isbn": "ISBN008",
+    "sku": "ISBN008",
+    "nombre": "Mas alla del invierno",
     "precio": 19000.0,
-    "stock": 7
+    "stock": 7,
+    "atributos": {
+      "autor": "Isabel Allende"
+    }
   },
   {
     "id": 9,
-    "titulo": "Los detectives salvajes",
-    "autor": "Roberto Bolaño",
-    "isbn": "ISBN009",
+    "sku": "ISBN009",
+    "nombre": "Los detectives salvajes",
     "precio": 22000.0,
-    "stock": 4
+    "stock": 4,
+    "atributos": {
+      "autor": "Roberto Bolano"
+    }
   },
   {
     "id": 10,
-    "titulo": "Por la patria",
-    "autor": "Diamela Eltit",
-    "isbn": "ISBN010",
+    "sku": "ISBN010",
+    "nombre": "Por la patria",
     "precio": 16000.0,
-    "stock": 6
+    "stock": 6,
+    "atributos": {
+      "autor": "Diamela Eltit"
+    }
   },
   {
     "id": 11,
-    "titulo": "Canto general",
-    "autor": "Pablo Neruda",
-    "isbn": "ISBN011",
+    "sku": "ISBN011",
+    "nombre": "Canto general",
     "precio": 25000.0,
-    "stock": 3
+    "stock": 3,
+    "atributos": {
+      "autor": "Pablo Neruda"
+    }
   },
   {
     "id": 12,
-    "titulo": "El cuaderno de Maya",
-    "autor": "Isabel Allende",
-    "isbn": "ISBN012",
+    "sku": "ISBN012",
+    "nombre": "El cuaderno de Maya",
     "precio": 17500.0,
-    "stock": 11
+    "stock": 11,
+    "atributos": {
+      "autor": "Isabel Allende"
+    }
   },
   {
     "id": 13,
-    "titulo": "Nombre de perro",
-    "autor": "Antonio Skármeta",
-    "isbn": "ISBN013",
+    "sku": "ISBN013",
+    "nombre": "Nombre de perro",
     "precio": 10500.0,
-    "stock": 14
+    "stock": 14,
+    "atributos": {
+      "autor": "Antonio Skarmeta"
+    }
   },
   {
     "id": 14,
-    "titulo": "Manchas de sangre",
-    "autor": "Ariel Dorfman",
-    "isbn": "ISBN014",
+    "sku": "ISBN014",
+    "nombre": "Manchas de sangre",
     "precio": 13500.0,
-    "stock": 8
+    "stock": 8,
+    "atributos": {
+      "autor": "Ariel Dorfman"
+    }
   },
   {
     "id": 15,
-    "titulo": "El gaucho insufrible",
-    "autor": "Roberto Bolaño",
-    "isbn": "ISBN015",
+    "sku": "ISBN015",
+    "nombre": "El gaucho insufrible",
     "precio": 14500.0,
-    "stock": 4
+    "stock": 5,
+    "atributos": {
+      "autor": "Roberto Bolano"
+    }
   },
   {
     "id": 16,
-    "titulo": "Poema 20",
-    "autor": "Pablo Neruda",
-    "isbn": "ISBN016",
+    "sku": "ISBN016",
+    "nombre": "Poema 20",
     "precio": 5000.0,
-    "stock": 25
+    "stock": 25,
+    "atributos": {
+      "autor": "Pablo Neruda"
+    }
   },
   {
     "id": 17,
-    "titulo": "Paula",
-    "autor": "Isabel Allende",
-    "isbn": "ISBN017",
+    "sku": "ISBN017",
+    "nombre": "Paula",
     "precio": 15500.0,
-    "stock": 9
+    "stock": 9,
+    "atributos": {
+      "autor": "Isabel Allende"
+    }
   },
   {
     "id": 18,
-    "titulo": "Yakamarí",
-    "autor": "Francisco Coloane",
-    "isbn": "ISBN018",
+    "sku": "ISBN018",
+    "nombre": "Yakamari",
     "precio": 11500.0,
-    "stock": 10
+    "stock": 10,
+    "atributos": {
+      "autor": "Francisco Coloane"
+    }
   },
   {
     "id": 19,
-    "titulo": "El camino de Santiago",
-    "autor": "Roberto Bolaño",
-    "isbn": "ISBN019",
+    "sku": "ISBN019",
+    "nombre": "El camino de Santiago",
     "precio": 18000.0,
-    "stock": 4
+    "stock": 4,
+    "atributos": {
+      "autor": "Roberto Bolano"
+    }
   },
   {
     "id": 20,
-    "titulo": "Lumpérica",
-    "autor": "Diamela Eltit",
-    "isbn": "ISBN020",
+    "sku": "ISBN020",
+    "nombre": "Lumperica",
     "precio": 17000.0,
-    "stock": 6
+    "stock": 6,
+    "atributos": {
+      "autor": "Diamela Eltit"
+    }
   },
   {
     "id": 21,
-    "titulo": "Crepúsculos",
-    "autor": "Mariano Latorre",
-    "isbn": "ISBN021",
+    "sku": "ISBN021",
+    "nombre": "Crepusculos",
     "precio": 12000.0,
-    "stock": 8
+    "stock": 8,
+    "atributos": {
+      "autor": "Mariano Latorre"
+    }
   },
   {
     "id": 22,
-    "titulo": "Altazor",
-    "autor": "Vicente Huidobro",
-    "isbn": "ISBN022",
+    "sku": "ISBN022",
+    "nombre": "Altazor",
     "precio": 16500.0,
-    "stock": 7
+    "stock": 7,
+    "atributos": {
+      "autor": "Vicente Huidobro"
+    }
   },
   {
     "id": 23,
-    "titulo": "El obsceno pájaro de la noche",
-    "autor": "José Donoso",
-    "isbn": "ISBN023",
+    "sku": "ISBN023",
+    "nombre": "El obsceno pajaro de la noche",
     "precio": 21000.0,
-    "stock": 3
+    "stock": 3,
+    "atributos": {
+      "autor": "Jose Donoso"
+    }
   },
   {
     "id": 24,
-    "titulo": "La última niebla",
-    "autor": "María Luisa Bombal",
-    "isbn": "ISBN024",
+    "sku": "ISBN024",
+    "nombre": "La ultima niebla",
     "precio": 12500.0,
-    "stock": 9
+    "stock": 9,
+    "atributos": {
+      "autor": "Maria Luisa Bombal"
+    }
   },
   {
     "id": 25,
-    "titulo": "Adiós, Munken",
-    "autor": "Jorge Edwards",
-    "isbn": "ISBN025",
+    "sku": "ISBN025",
+    "nombre": "Adios, Munken",
     "precio": 14000.0,
-    "stock": 5
+    "stock": 5,
+    "atributos": {
+      "autor": "Jorge Edwards"
+    }
   },
   {
     "id": 26,
-    "titulo": "Un año de vida",
-    "autor": "Volodia Teitelboim",
-    "isbn": "ISBN026",
+    "sku": "ISBN026",
+    "nombre": "Un ano de vida",
     "precio": 19500.0,
-    "stock": 2
+    "stock": 2,
+    "atributos": {
+      "autor": "Volodia Teitelboim"
+    }
   },
   {
     "id": 27,
-    "titulo": "La ciudad de los cesares",
-    "autor": "Francisco Coloane",
-    "isbn": "ISBN027",
+    "sku": "ISBN027",
+    "nombre": "La ciudad de los cesares",
     "precio": 13000.0,
-    "stock": 6
+    "stock": 6,
+    "atributos": {
+      "autor": "Francisco Coloane"
+    }
   },
   {
     "id": 28,
-    "titulo": "Miltín 1934",
-    "autor": "Juan Emar",
-    "isbn": "ISBN028",
+    "sku": "ISBN028",
+    "nombre": "Miltin 1934",
     "precio": 15000.0,
-    "stock": 4
+    "stock": 4,
+    "atributos": {
+      "autor": "Juan Emar"
+    }
   },
   {
     "id": 29,
-    "titulo": "El lugar sin límites",
-    "autor": "José Donoso",
-    "isbn": "ISBN029",
+    "sku": "ISBN029",
+    "nombre": "El lugar sin limites",
     "precio": 16000.0,
-    "stock": 5
+    "stock": 5,
+    "atributos": {
+      "autor": "Jose Donoso"
+    }
   },
   {
     "id": 30,
-    "titulo": "Hijo de ladrón",
-    "autor": "Manuel Rojas",
-    "isbn": "ISBN030",
+    "sku": "ISBN030",
+    "nombre": "Hijo de ladron",
     "precio": 11000.0,
-    "stock": 12
+    "stock": 12,
+    "atributos": {
+      "autor": "Manuel Rojas"
+    }
   }
 ]

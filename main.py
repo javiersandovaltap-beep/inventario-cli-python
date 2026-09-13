@@ -1,62 +1,42 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Librería Autores Chilenos — Sistema de Gestión de Inventario | Python puro | PEP 8 + Zen of Python
+"""Inventory CLI - main entry point.
+
+Constructs the Inventario instance with injected persistence and preset,
+loads initial data, and runs the menu loop.
 """
 
 import sys
-from modulos.datos_basicos import DATOS_INICIALES
-from modulos.menu import mostrar_menu, pedir_opcion
-from modulos.persistencia import cargar_libros, guardar_libros, existe_archivo
+
 from modulos.gestion_datos import (
-    listar_libros, agregar_libro, buscar_libro,
-    actualizar_stock, eliminar_libro, generar_reporte
+    actualizar_stock,
+    agregar_libro,
+    buscar_libro,
+    eliminar_libro,
+    generar_reporte,
+    listar_libros,
 )
-
-libros_db = []
-ids_set = set()
-isbns_set = set()
-
-
-def cargar_datos_iniciales():
-    """Carga libros desde libros.json si existe, o desde datos_basicos.py si es primera ejecución."""
-    global libros_db
-
-    if existe_archivo():
-        datos = cargar_libros()
-        libros_db.extend(datos)
-        for libro in libros_db:
-            ids_set.add(libro['id'])
-            isbns_set.add(libro['isbn'])
-        print(f"📂 Datos cargados desde archivo — {len(libros_db)} libros.")
-    else:
-        for dato in DATOS_INICIALES:
-            nuevo_id = len(libros_db) + 1
-            libros_db.append({
-                'id': nuevo_id,
-                'titulo': dato['titulo'],
-                'autor': dato['autor'],
-                'isbn': dato['isbn'],
-                'precio': dato['precio'],
-                'stock': dato['stock']
-            })
-            ids_set.add(nuevo_id)
-            isbns_set.add(dato['isbn'])
-        guardar_libros(libros_db)
-        print(f"🆕 Primera ejecución — {len(libros_db)} libros cargados y guardados.")
+from modulos.inventario import Inventario
+from modulos.menu import mostrar_menu, pedir_opcion
+from modulos.persistencia import PersistenciaJson
+from presets.libreria_chilena import PRESET_LIBRERIA_CHILENA
 
 
-def main():
-    """Punto de entrada del sistema. Inicializa datos y ejecuta el bucle principal."""
-    cargar_datos_iniciales()
+def main() -> None:
+    """Entry point. Initializes inventory and runs the menu loop."""
+    inventario = Inventario(
+        persistencia=PersistenciaJson("data/libros.json"),
+        preset=PRESET_LIBRERIA_CHILENA,
+    )
+    inventario.cargar_inicial()
+    print(f"📂 Datos cargados — {len(inventario.listar())} libros.\n")
 
     opciones = {
-        1: lambda: listar_libros(libros_db),
-        2: lambda: agregar_libro(libros_db, ids_set, isbns_set),
-        3: lambda: buscar_libro(libros_db),
-        4: lambda: actualizar_stock(libros_db),
-        5: lambda: eliminar_libro(libros_db, ids_set, isbns_set),
-        6: lambda: generar_reporte(libros_db),
+        1: lambda: listar_libros(inventario),
+        2: lambda: agregar_libro(inventario),
+        3: lambda: buscar_libro(inventario),
+        4: lambda: actualizar_stock(inventario),
+        5: lambda: eliminar_libro(inventario),
+        6: lambda: generar_reporte(inventario),
     }
 
     while True:
