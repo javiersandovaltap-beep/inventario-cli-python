@@ -25,6 +25,8 @@ env/
 .coverage
 htmlcov/
 .tox/
+coverage.xml
+*.coverage.*
 
 # Type checking
 .mypy_cache/
@@ -40,3 +42,22 @@ Thumbs.db
 
 # Docker
 *.log
+
+# Local Claude Code state (do not commit)
+.claude/local/
+sessionstate.md
+memory.md
+
+# Session handovers (local only, never commit)
+traspaso_*.md
+
+# Archives (never commit compressed bundles)
+*.rar
+*.zip
+*.7z
+*.tar
+*.tar.gz
+
+# Build artifacts
+*.whl
+*.tar.bz2

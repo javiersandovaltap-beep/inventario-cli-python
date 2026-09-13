@@ -4,6 +4,8 @@
       "Edit(AGENTS.md)",
       "Edit(CLAUDE.md)",
       "Edit(.github/workflows/ci.yml)",
+      "Edit(.claude/agents/**)",
+      "Edit(.claude/hooks/**)",
       "Read(.env)",
       "Read(**/secrets/**)",
       "Read(**/.aws/**)",

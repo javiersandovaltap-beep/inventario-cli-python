@@ -1,41 +1,222 @@
-# Reglas de Arquitectura — inventario-cli-python
+# AGENTS.md — inventario-cli-python
 
-## Stack
-- Python 3.11+ puro (sin dependencias externas en runtime)
-- Persistencia: JSON inyectable (Strategy pattern)
-- Tests: pytest
-- Linting: ruff
-- Type checking: mypy (modo non-strict)
-- Container: Docker multi-stage con python:3.12-slim
+> Architectural contract for the project.
+> Treat as binding law. Violating any rule requires explicit user approval.
+> Read this BEFORE proposing any change.
 
-## Arquitectura (Nivel 2)
-- `modulos/item.py`: dataclass `Item` genérico (campos base + `atributos: dict`)
-- `modulos/inventario.py`: clase `Inventario` con persistencia inyectable
-- `modulos/persistencia.py`: implementación concreta `PersistenciaJson`
-- `presets/base.py`: Protocol `Preset` (contrato de dominio)
-- `presets/libreria_chilena.py`: implementación concreta de preset
-- `modulos/gestion_datos.py`: lógica CRUD que opera sobre `Inventario`
-- `modulos/menu.py`: presentación CLI (solo I/O)
+## 1. Identity
 
-## Reglas
-1. (Separación) Nunca mezclar presentación (CLI/menu) con lógica de negocio
-   (CRUD/reportes) ni con persistencia (JSON I/O).
-2. (Manejo de errores) No usar print() para reportar errores del sistema.
-   Usar logging o levantar excepciones específicas.
-3. (Datos) Toda entrada del usuario debe ser validada antes de procesarse.
-4. (Estado) No mutar estado global desde funciones de negocio. Encapsular
-   estado en `Inventario`.
-5. (Tests) Toda nueva funcionalidad debe incluir al menos un test smoke
-   y un test de caso límite.
-6. (Dominio) La lógica específica de un dominio (autores chilenos, categorías
-   de ferretería, etc.) vive en `presets/`, no en `modulos/`.
+- **Project:** inventario-cli-python
+- **Version:** 0.3.0
+- **Maturity target:** 3.8/5 (current baseline: 2.7/5)
+- **LOC budget:** 650-750 Python lines (current: 518)
 
-## Comandos permitidos sin preguntar
-- pytest, ruff check, ruff format, mypy .
-- python main.py (para pruebas manuales)
-- git status, git diff, git log
+## 2. Stack
 
-## Comandos que requieren aprobación manual
-- git commit, git push
-- pip install (cualquier paquete nuevo)
-- Cualquier comando que afecte .github/workflows/ o pyproject.toml
+| Component   | Choice                          | Notes                                                        |
+|-------------|---------------------------------|--------------------------------------------------------------|
+| Runtime     | Python 3.11+                    | No runtime dependencies                                      |
+| Persistence | JSON (injectable)               | Strategy pattern, path injected via constructor              |
+| Tests       | pytest + pytest-cov             | strict-markers, ≥70% coverage target by project close       |
+| Lint        | ruff                            | E, W, F, I, N, B, C4, SIM, UP, D                             |
+| Types       | mypy                            | non-strict, warn_return_any=true                             |
+| Security    | bandit                          | -ll, skip B101, exclude tests/ and data/                    |
+| Hooks       | pre-commit                      | ruff + format + check-yaml/toml/large-files/merge-conflict   |
+| Container   | Docker multi-stage              | python:3.12-slim, Fase 2                                     |
+
+## 3. Architecture (layered)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  presentation   │ modulos/menu.py                           │
+│                 │ modulos/validaciones.py (generic inputs)  │
+├─────────────────────────────────────────────────────────────┤
+│  business       │ modulos/gestion_datos.py (CRUD)           │
+│                 │ modulos/funciones_utiles.py (helpers)     │
+├─────────────────────────────────────────────────────────────┤
+│  domain core    │ modulos/item.py (dataclass Item)          │
+│                 │ modulos/inventario.py (class Inventario)  │
+├─────────────────────────────────────────────────────────────┤
+│  infrastructure │ modulos/persistencia.py (PersistenciaJson)│
+├─────────────────────────────────────────────────────────────┤
+│  domain presets │ presets/base.py (Protocol Preset)         │
+│                 │ presets/libreria_chilena.py (impl)        │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Dependency direction:** top → bottom only. A preset MUST NOT import from `modulos/`. Presentation MUST NOT import from `persistencia.py` directly.
+
+## 4. Module contracts
+
+### 4.1 `modulos/item.py` (Tarea 0.2 — pending)
+
+- **Responsibility:** Generic dataclass for inventory items.
+- **Public API:**
+  - `Item` dataclass: `id: int`, `sku: str`, `nombre: str`, `precio: float`, `stock: int`, `atributos: dict[str, Any] = field(default_factory=dict)`
+  - `Item.to_dict(self) -> dict[str, Any]`
+  - `Item.from_dict(cls, data: dict[str, Any]) -> Item` (classmethod)
+- **Dependencies:** stdlib only (`dataclasses`, `typing`).
+- **Constraints:** SKU replaces ISBN as universal identifier. `atributos` is the extension point for domain fields (autor, categoría, marca, etc.).
+
+### 4.2 `modulos/inventario.py` (Tarea 0.5 — pending)
+
+- **Responsibility:** Encapsulate inventory state + delegate persistence.
+- **Public API:**
+  - `Inventario(persistencia: PersistenciaProtocol, preset: Preset)`
+  - `agregar(item: Item) -> None`
+  - `eliminar(sku: str) -> bool`
+  - `buscar(sku: str) -> Item | None`
+  - `actualizar_stock(sku: str, delta: int) -> None`
+  - `listar() -> list[Item]`
+  - `cargar() -> None`
+  - `guardar() -> None`
+- **Dependencies:** `modulos/item.py`, `presets/base.py`.
+- **Constraints:** No globals. State lives in `self._items: list[Item]`. Persistence is injected, not imported.
+
+### 4.3 `modulos/persistencia.py` (Tarea 0.4 — refactor pending)
+
+- **Responsibility:** Concrete JSON I/O implementing `PersistenciaProtocol`.
+- **Public API:**
+  - `PersistenciaJson(ruta: Path | str)`
+  - `guardar(items: list[Item]) -> None`
+  - `cargar() -> list[Item]`
+- **Dependencies:** stdlib (`json`, `pathlib`, `os`).
+- **Constraints:** No module-level `RUTA_DATOS`. Path comes from constructor. Raises `PersistenciaError` (new) on corrupt JSON, not raw `json.JSONDecodeError`.
+
+### 4.4 `modulos/validaciones.py` (Tarea 0.6 — cleanup pending)
+
+- **Responsibility:** Generic input validators only.
+- **Public API:**
+  - `validar_input_numero(prompt: str, min_val: int = 0) -> int`
+  - `validar_input_flotante(prompt: str, min_val: float = 0.0) -> float`
+- **Constraints:** No domain logic (no `validar_autor_chileno` — that moves to preset).
+
+### 4.5 `modulos/funciones_utiles.py` (Fase 1 — refactor pending)
+
+- **Responsibility:** ID generation (iterative, not recursive — fixes L-04).
+- **Public API:** `generar_id(ids_en_uso: set[int]) -> int`
+- **Constraints:** Iterative, not recursive. O(n) worst case. No stack overflow on large inventories.
+
+### 4.6 `modulos/gestion_datos.py` (Tarea 0.5 — refactor pending)
+
+- **Responsibility:** CRUD operations on `Inventario` instance.
+- **Public API:** Functions receiving `Inventario` instance, not raw lists.
+- **Constraints:** No direct persistence calls. No `print()` for system errors (raise exceptions).
+
+### 4.7 `modulos/menu.py` (Tarea 0.6 + Fase 1)
+
+- **Responsibility:** CLI presentation only (input/output).
+- **Public API:** `mostrar_menu() -> None`, `pedir_opcion() -> int`
+- **Constraints:** No business logic. Validates 0-6 range (fixes L-01). No duplicate definitions (fixes L-07).
+
+### 4.8 `presets/base.py` (Tarea 0.3 — pending)
+
+- **Responsibility:** Protocol defining the domain preset contract.
+- **Public API:**
+  ```python
+  class Preset(Protocol):
+      nombre: str
+      slug: str
+      schema_atributos: dict[str, type]
+      validadores: dict[str, Callable[[Any], bool]]
+      seed: list[Item]
+  ```
+- **Constraints:** Pure protocol, no implementation. Each domain ships its own concrete preset.
+
+### 4.9 `presets/libreria_chilena.py` (Tarea 0.3 — pending)
+
+- **Responsibility:** Concrete preset for Chilean bookstore domain.
+- **Public API:** Implements `Preset`. Migrates 30 books from `datos_basicos.py`.
+- **Constraints:** Domain fields (autor, categoría literaria) live in `Item.atributos`, not as top-level dataclass fields.
+
+## 5. Design patterns
+
+| Pattern              | Where                                          | Why                                                              |
+|----------------------|------------------------------------------------|------------------------------------------------------------------|
+| Strategy             | `PersistenciaJson` injected into `Inventario` | Allows swapping JSON → SQLite → memory without touching business |
+| Protocol             | `Preset` in `presets/base.py`                  | Structural typing, no inheritance coupling                        |
+| Dataclass            | `Item`                                         | Immutable-ish, serializable, type-safe                          |
+| Dependency Injection | `Inventario(persistencia, preset)`             | Testable with mocks (Fase 4)                                     |
+| Layered architecture | presentation → business → core → infra → presets | Single dependency direction                                     |
+
+## 6. Rules
+
+| #    | Rule                                                                                                          | Severity    |
+|------|--------------------------------------------------------------------------------------------------------------|-------------|
+| R1   | Never mix presentation (CLI/menu) with business logic or persistence.                                        | 🔴 Blocking |
+| R2   | No `print()` for system errors. Use `logging` or raise typed exceptions.                                    | 🔴 Blocking |
+| R3   | All user input must be validated before processing.                                                          | 🔴 Blocking |
+| R4   | No global mutable state in business layer. State lives in `Inventario`.                                     | 🔴 Blocking |
+| R5   | Every new feature ships with at least one smoke test and one edge test.                                      | 🟡 Required |
+| R6   | Domain logic lives in `presets/`, never in `modulos/`.                                                       | 🔴 Blocking |
+| R7   | Type hints on all public APIs. Internal helpers may skip.                                                   | 🟡 Required |
+| R8   | No new runtime dependencies without explicit user approval.                                                 | 🔴 Blocking |
+| R9   | Conventional commits only (`feat:`, `fix:`, `refactor:`, `docs:`, `test:`, `chore:`).                       | 🟡 Required |
+| R10  | Don't touch `pyproject.toml`, `.github/workflows/`, `AGENTS.md`, `CLAUDE.md`, `.claude/agents/**`, `.claude/hooks/**` without explicit approval. | 🔴 Blocking |
+
+## 7. Definition of Done (by task type)
+
+### New module
+- [ ] Module file created with full type hints
+- [ ] Module-level docstring
+- [ ] Public API matches AGENTS.md contract
+- [ ] `ruff check` clean
+- [ ] `mypy` clean
+- [ ] At least one smoke test (Fase 4+)
+
+### Refactor (signature change)
+- [ ] All callers updated in same commit
+- [ ] Backward-compat shim only if explicitly requested
+- [ ] `pytest` still green (or new tests added)
+- [ ] `@code-reviewer` invoked
+
+### Bug fix
+- [ ] Reproduction test added (must fail before fix, pass after)
+- [ ] Root cause identified in commit message
+- [ ] No unrelated changes
+
+### Docs
+- [ ] Spanish for public files, English for governance
+- [ ] No broken links
+- [ ] Code samples run as-is
+
+## 8. Anti-patterns (do NOT do)
+
+| Anti-pattern                              | Correct alternative                                  |
+|-------------------------------------------|------------------------------------------------------|
+| `global libros_db`                        | Encapsulate in `Inventario` instance                 |
+| Module-level `RUTA_DATOS = ...`           | Inject path via `PersistenciaJson(path)` constructor |
+| `print("Error: ...")` in business layer  | `raise InventarioError(...)` or `logging.error(...)` |
+| `sys.exit(0)` in middle of loop          | `break` or `return` from `main()`                   |
+| Recursive ID generator                   | Iterative `while` loop                               |
+| ISBN as identifier                       | SKU (universal) + `atributos['isbn']` for domain     |
+| Domain logic in `modulos/`               | Move to `presets/<domain>.py`                        |
+| `Dict[str, Any]` (legacy typing)         | `dict[str, Any]` (modern syntax)                     |
+| Skipping `@code-reviewer` before commit   | Always audit, even for trivial changes              |
+| `datos_basicos.py` for seed data         | Move to `presets/<domain>.py` as `seed` attribute   |
+
+## 9. Permission matrix
+
+| Command / file                                     | Permission | Source                |
+|----------------------------------------------------|------------|-----------------------|
+| `ruff check`, `ruff format`, `pytest`, `mypy`, `bandit` | ✅ Allow   | settings.json         |
+| `git status`, `git diff`, `git log`                | ✅ Allow   | settings.json         |
+| `python main.py`, `python -c`                      | ✅ Allow   | settings.json         |
+| `git commit`, `git push`                           | ⚠️ Ask     | settings.json         |
+| `pip install`                                      | ⚠️ Ask     | settings.json         |
+| `rm -rf`, `git push --force/-f`, `DROP TABLE`, `TRUNCATE`, `Remove-Item -Recurse` | ❌ Deny | settings.json + block-rm.ps1 |
+| Edit `AGENTS.md`, `CLAUDE.md`, `.github/workflows/ci.yml` | ❌ Deny    | settings.json         |
+| Edit `.claude/agents/**`, `.claude/hooks/**`       | ❌ Deny    | settings.json         |
+| Read `.env`, `**/secrets/**`, `**/.aws/**`         | ❌ Deny    | settings.json         |
+
+## 10. References
+
+- Roadmap: `/home/z/my-project/download/roadmap_01_inventario.md`
+- Last session handover: `/home/z/my-project/download/traspasos/traspaso_fase_0_setup.md`
+- Local state: `.claude/local/sessionstate.md`, `.claude/local/memory.md`
+- Subagents (4 total):
+  - `.claude/agents/quick-explorer.md` (haiku) — read-only code locator
+  - `.claude/agents/implementer.md` (sonnet) — delegated execution of well-specified plans
+  - `.claude/agents/code-reviewer.md` (sonnet) — post-implementation compliance audit
+  - `.claude/agents/architecture-reviewer.md` (opus, max 2/phase) — pre-implementation design review
+- Hooks: `.claude/hooks/block-rm.ps1` (active), `.claude/hooks/run-tests.ps1` (active from Fase 4)
