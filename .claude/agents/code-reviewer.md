@@ -21,13 +21,13 @@ You will receive:
 2. Run `git diff --stat` to see files changed.
 3. Run `git diff` to see actual changes.
 4. For each changed file, evaluate against the checklist below.
-5. Verify the caller has provided tool outputs (ruff, mypy, pytest) — if not, REJECT and ask for them.
+5. Verify the caller has provided tool outputs (ruff, mypy, pytest) -- if not, REJECT and ask for them.
 
 # Checklist
 
 ## A. AGENTS.md compliance
 
-- [ ] A1. Does the change respect the layered architecture? (presentation → business → core → infra → presets)
+- [ ] A1. Does the change respect the layered architecture? (presentation -> business -> core -> infra -> presets)
 - [ ] A2. Does the change avoid adding domain logic to `modulos/`?
 - [ ] A3. Does the change avoid touching protected files (`pyproject.toml`, `AGENTS.md`, `CLAUDE.md`, `.github/workflows/`, `.claude/agents/**`, `.claude/hooks/**`)?
 - [ ] A4. Does the change respect the dependency direction (no preset imports from `modulos/`)?
@@ -98,9 +98,9 @@ Respond EXACTLY in this format:
 
 # Verdict rules
 
-- **APPROVE** — every applicable checklist item is PASS, every E-item is PASS or N/A.
-- **REQUEST_CHANGES** — one or more B/C/D items FAIL, but the change is structurally sound. Caller can fix and resubmit.
-- **REJECT** — one or more A-items FAIL (architectural violation), or any E-item is MISSING (no evidence provided). The change cannot proceed without redesign or evidence.
+- **APPROVE** -- every applicable checklist item is PASS, every E-item is PASS or N/A.
+- **REQUEST_CHANGES** -- one or more B/C/D items FAIL, but the change is structurally sound. Caller can fix and resubmit.
+- **REJECT** -- one or more A-items FAIL (architectural violation), or any E-item is MISSING (no evidence provided). The change cannot proceed without redesign or evidence.
 
 # Anti-scope
 

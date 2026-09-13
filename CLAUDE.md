@@ -1,4 +1,4 @@
-# CLAUDE.md — inventario-cli-python
+# CLAUDE.md -- inventario-cli-python
 
 > Project-specific system prompt for Claude Code.
 > Read at session start. Treat as binding operational law.
@@ -14,7 +14,7 @@
 
 ## 2. Core principles
 
-1. **Atomic changes.** One task → one commit. Never bundle unrelated work.
+1. **Atomic changes.** One task -> one commit. Never bundle unrelated work.
 2. **Evidence-first.** Every claim about code state must be backed by a tool output (ruff / mypy / pytest / git diff). No "I think it works".
 3. **Scope discipline.** Refactor only what the current prompt requires. Adjacent smells stay untouched.
 4. **Read AGENTS.md first.** It contains the architectural contract. Violating it = rejecting the change.
@@ -30,7 +30,7 @@
 | Format      | ruff format | quote=double, indent=space                               |
 | Types       | mypy        | >=1.11, non-strict, warn_return_any=true                 |
 | Tests       | pytest      | >=8.0, strict-markers, markers: smoke/unit/edge/integration |
-| Coverage    | pytest-cov  | >=5.0, target ≥70% by project close                      |
+| Coverage    | pytest-cov  | >=5.0, target >=70% by project close                      |
 | Security    | bandit      | >=1.7, skip B101, exclude tests/ and data/               |
 | Hooks       | pre-commit  | >=3.8, ruff + format + standard checks                   |
 
@@ -42,7 +42,7 @@
 | Nemotron Super      | sonnet | Multi-file, CI/CD, Docker, refactor with signature change | Deep architectural reasoning                    |
 | Kimi K3             | opus   | Architectural refactor, complex design decisions       | Routine tasks (quota rationed: max 2 per phase) |
 
-### Subagent → model mapping
+### Subagent -> model mapping
 
 | Subagent               | Model  | Purpose                                                          |
 |------------------------|--------|------------------------------------------------------------------|
@@ -54,12 +54,12 @@
 ## 5. Workflow per task
 
 1. **Read** AGENTS.md (architecture contract) and the relevant module.
-2. **Plan** — output a plan with files affected, signatures, and verification commands. Wait for approval before editing.
-3. **Optional: design review** — for tasks touching >2 modules or introducing new patterns, invoke `@architecture-reviewer` BEFORE implementation. Quota: max 2 invocations per phase.
-4. **Implement** — for mechanical/well-specified tasks, delegate to `@implementer`. For architectural tasks, do it yourself.
-5. **Verify** — paste tool outputs. No "should work". Show the green. (If `@implementer` was used, this comes back in its report.)
-6. **Audit** — invoke `@code-reviewer` subagent before commit.
-7. **Commit** — conventional commit format. Ask before `git commit` and `git push` (both are `ask` in settings.json).
+2. **Plan** -- output a plan with files affected, signatures, and verification commands. Wait for approval before editing.
+3. **Optional: design review** -- for tasks touching >2 modules or introducing new patterns, invoke `@architecture-reviewer` BEFORE implementation. Quota: max 2 invocations per phase.
+4. **Implement** -- for mechanical/well-specified tasks, delegate to `@implementer`. For architectural tasks, do it yourself.
+5. **Verify** -- paste tool outputs. No "should work". Show the green. (If `@implementer` was used, this comes back in its report.)
+6. **Audit** -- invoke `@code-reviewer` subagent before commit.
+7. **Commit** -- conventional commit format. Ask before `git commit` and `git push` (both are `ask` in settings.json).
 
 ### When to delegate vs. do it yourself
 
@@ -129,10 +129,10 @@ Halt immediately and ask the user if:
 
 - Architecture contract: `AGENTS.md`
 - Subagents:
-  - `.claude/agents/quick-explorer.md` (haiku) — read-only code locator
-  - `.claude/agents/implementer.md` (sonnet) — delegated execution of well-specified plans
-  - `.claude/agents/code-reviewer.md` (sonnet) — post-impl compliance audit
-  - `.claude/agents/architecture-reviewer.md` (opus, max 2/phase) — pre-impl design review
+  - `.claude/agents/quick-explorer.md` (haiku) -- read-only code locator
+  - `.claude/agents/implementer.md` (sonnet) -- delegated execution of well-specified plans
+  - `.claude/agents/code-reviewer.md` (sonnet) -- post-impl compliance audit
+  - `.claude/agents/architecture-reviewer.md` (opus, max 2/phase) -- pre-impl design review
 - Permissions: `.claude/settings.json`
 - Hooks: `.claude/hooks/block-rm.ps1` (PreToolUse, active), `.claude/hooks/run-tests.ps1` (PostToolUse, active from Fase 4)
 - Roadmap: `/home/z/my-project/download/roadmap_01_inventario.md`

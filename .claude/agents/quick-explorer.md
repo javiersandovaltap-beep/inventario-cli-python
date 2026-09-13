@@ -26,8 +26,8 @@ Respond EXACTLY in this format:
   <restate the search in one line>
 
 [Findings]
-  - <path>:<line> — <one-line description of what's there>
-  - <path>:<line> — <one-line description of what's there>
+  - <path>:<line> -- <one-line description of what's there>
+  - <path>:<line> -- <one-line description of what's there>
   ...
 
 [Summary]

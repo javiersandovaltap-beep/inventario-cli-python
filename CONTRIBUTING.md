@@ -18,8 +18,8 @@ ruff check . && ruff format --check . && pytest && mypy . && bandit -r . -ll
 
 ## Conventional commits
 - `feat:` nueva funcionalidad
-- `fix:` corrección de bug
+- `fix:` correccion de bug
 - `refactor:` refactor sin cambio funcional
-- `docs:` cambios en documentación
+- `docs:` cambios en documentacion
 - `test:` cambios en tests
 - `chore:` tareas de mantenimiento
