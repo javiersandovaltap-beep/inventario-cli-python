@@ -25,8 +25,15 @@
       "Bash(git status)",
       "Bash(git diff*)",
       "Bash(git log*)",
-      "Bash(python main.py*)",
-      "Bash(python -c*)"
+      "Bash(git rm*)",
+      "Bash(git mv*)",
+      "Bash(echo*)",
+      "Bash(printf*)",
+      "Bash(ls*)",
+      "Bash(wc*)",
+      "Bash(cat*)",
+      "Bash(test*)",
+      "Bash(python *)"
     ],
     "ask": [
       "Bash(git commit*)",
@@ -44,8 +51,10 @@
             "command": "powershell.exe",
             "args": [
               "-NoProfile",
-              "-ExecutionPolicy", "Bypass",
-              "-File", "${CLAUDE_PROJECT_DIR}/.claude/hooks/block-rm.ps1"
+              "-ExecutionPolicy",
+              "Bypass",
+              "-File",
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/block-rm.ps1"
             ]
           }
         ]

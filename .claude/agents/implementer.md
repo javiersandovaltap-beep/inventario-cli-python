@@ -1,7 +1,7 @@
 ---
 name: implementer
 description: Use to delegate execution of a well-specified plan. Writes code, runs ruff/mypy/pytest, returns diff + verification. Does NOT design architecture or change public APIs. Caller MUST provide the plan.
-tools: Read, Grep, Glob, Edit, Write, Bash(ruff*), Bash(mypy*), Bash(pytest*), Bash(python -c*), Bash(git diff*), Bash(git status)
+tools: Read, Grep, Glob, Edit, Write, Bash(ruff*), Bash(mypy*), Bash(pytest*), Bash(bandit*), Bash(python *), Bash(git rm*), Bash(git mv*), Bash(git diff*), Bash(git status), Bash(git log*), Bash(echo*), Bash(printf*), Bash(ls*), Bash(wc*), Bash(cat*), Bash(test *), Bash([
 model: sonnet
 ---
 
