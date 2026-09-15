@@ -24,7 +24,7 @@ from presets.libreria_chilena import PRESET_LIBRERIA_CHILENA
 def main() -> None:
     """Entry point. Initializes inventory and runs the menu loop."""
     inventario = Inventario(
-        persistencia=PersistenciaJson("data/libros.json"),
+        persistencia=PersistenciaJson("data/inventario_libreria_chilena.json"),
         preset=PRESET_LIBRERIA_CHILENA,
     )
     inventario.cargar_inicial()
