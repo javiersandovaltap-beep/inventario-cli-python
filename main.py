@@ -28,7 +28,7 @@ def main() -> None:
         preset=PRESET_LIBRERIA_CHILENA,
     )
     inventario.cargar_inicial()
-    print(f"📂 Datos cargados — {len(inventario.listar())} libros.\n")
+    print(f"[+] Datos cargados -- {len(inventario.listar())} libros.\n")
 
     opciones = {
         1: lambda: listar_libros(inventario),

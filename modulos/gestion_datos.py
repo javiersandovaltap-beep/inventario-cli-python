@@ -3,7 +3,6 @@
 from modulos.funciones_utiles import validar_input_flotante, validar_input_numero
 from modulos.inventario import Inventario
 from modulos.item import Item
-from modulos.validaciones import mostrar_autores_validos, validar_autor_chileno
 
 
 def listar_libros(inventario: Inventario) -> None:
@@ -49,10 +48,6 @@ def agregar_libro(inventario: Inventario) -> None:
         return
 
     autor = input("Autor: ").strip()
-    if not validar_autor_chileno(autor):
-        print(f"Error: '{autor}' no está en el catálogo de autores permitidos.")
-        mostrar_autores_validos()
-        return
 
     isbn = input("ISBN: ").strip()
     if not isbn:
@@ -77,7 +72,7 @@ def agregar_libro(inventario: Inventario) -> None:
         print(f"\n✔ Libro '{titulo}' agregado exitosamente con ID: {nuevo_id}")
         print("  💾 Datos guardados.")
     else:
-        print("Error: No se pudo agregar el libro (SKU duplicado o validación falló).")
+        print("Error: No se pudo agregar el libro (SKU duplicado o autor no válido).")
 
 
 def buscar_libro(inventario: Inventario) -> None:

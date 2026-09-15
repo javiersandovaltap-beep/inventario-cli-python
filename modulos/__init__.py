@@ -1,7 +1,21 @@
-# modulos/__init__.py
-from .gestion_datos import (
-    listar_libros, agregar_libro, buscar_libro,
-    actualizar_stock, eliminar_libro, generar_reporte
+"""modulos package -- inventory CLI business modules."""
+
+from modulos.funciones_utiles import generar_id_recursivo
+from modulos.gestion_datos import (
+    actualizar_stock,
+    agregar_libro,
+    buscar_libro,
+    eliminar_libro,
+    generar_reporte,
+    listar_libros,
 )
-from .validaciones import validar_autor_chileno, AUTORES_CHILENOS
-from .funciones_utiles import generar_id_recursivo
+
+__all__ = [
+    "actualizar_stock",
+    "agregar_libro",
+    "buscar_libro",
+    "eliminar_libro",
+    "generar_id_recursivo",
+    "generar_reporte",
+    "listar_libros",
+]
