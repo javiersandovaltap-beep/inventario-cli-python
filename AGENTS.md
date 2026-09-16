@@ -220,3 +220,23 @@
   - `.claude/agents/code-reviewer.md` (sonnet) -- post-implementation compliance audit
   - `.claude/agents/architecture-reviewer.md` (opus, max 2/phase) -- pre-implementation design review
 - Hooks: `.claude/hooks/block-rm.ps1` (active), `.claude/hooks/run-tests.ps1` (active from Fase 4)
+## 11. Versioning and Tags
+
+- **Versioning scheme**: semantic versioning `vMAJOR.MINOR.PATCH`.
+  - `v0.X.0` per phase boundary (Fase 0 = v0.1.0, Fase 1 = v0.2.0, ..., Fase 5 = v1.0.0).
+  - `v1.0.0` marks project complete (post-Fase 5).
+  - Patch releases `vX.Y.Z` (Z > 0) reserved for hotfixes between phases.
+- **Tag type**: annotated (`git tag -a`), not lightweight. Phase boundaries are release-like markers.
+- **Cadence**: per phase boundary, NOT per task. Tasks are internal; phases are deliverables.
+- **Push policy**: `git push origin <tag>` per-tag, NOT `git push --tags` (granular control, avoids accidental pushes of stale local tags).
+- **Message format**: one-line: `Fase <N>: <one-line summary>`.
+- **Retroactive application**: if a phase was closed without a tag, apply retroactively with `git tag -a v0.X.0 <hash> -m "<message>"` at the next opportunity. Do not skip -- phase boundaries without tags are a governance debt.
+- **Verification**: after push, verify with `git ls-remote --tags origin | grep v0.X.0`. The returned hash is the tag object hash (not the commit hash) for annotated tags.
+
+Example:
+
+```bash
+git tag -a v0.3.0 5695ba6 -m "Fase 2: DevOps pipeline (CI + Docker + docker-cleanup)"
+git push origin v0.3.0
+git ls-remote --tags origin | grep v0.3.0
+```
