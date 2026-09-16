@@ -32,7 +32,6 @@ jobs:
   test:
     name: Test (pytest)
     runs-on: ubuntu-latest
-    continue-on-error: true  # tests/ does not exist yet; remove in Fase 4
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python
@@ -46,6 +45,7 @@ jobs:
           pip install -e ".[dev]" --no-cache-dir
       - name: pytest
         run: pytest
+        continue-on-error: true  # tests/ does not exist yet; remove in Fase 4
 
   security:
     name: Security (bandit + pip-audit)
@@ -71,10 +71,10 @@ jobs:
   build:
     name: Build (docker)
     runs-on: ubuntu-latest
-    continue-on-error: true  # Dockerfile does not exist yet; remove in Tarea 2.2
     steps:
       - uses: actions/checkout@v4
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Build Docker image
         run: docker build -t inventario:ci .
+        continue-on-error: true  # Dockerfile does not exist yet; remove in Tarea 2.2
