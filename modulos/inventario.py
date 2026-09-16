@@ -3,10 +3,11 @@
 from __future__ import annotations
 
 from collections import Counter
+from contextlib import suppress
 from typing import Any
 
 from modulos.item import Item
-from modulos.persistencia import PersistenciaJson
+from modulos.persistencia import PersistenciaError, PersistenciaJson
 from presets.base import Preset
 
 
@@ -157,14 +158,22 @@ class Inventario:
         self._ids = {item.id for item in self._items}
 
     def cargar_inicial(self) -> None:
-        """Load from persistence, or seed from preset if empty.
+        """Load from persistence, or seed from preset if empty or corrupt.
 
-        Calls cargar() first. If the inventory is empty after loading
+        Calls cargar() first. If persistence returns an empty list
         (file does not exist or is empty), populates from the preset
-        seed and persists the seed data. Idempotent: a second call when
-        items already exist does nothing.
+        seed and persists the seed data. If persistence raises
+        PersistenciaError (corrupt JSON or schema validation failure
+        -- the corrupt file has already been isolated by
+        PersistenciaJson), populates from the preset seed and
+        persists. Idempotent: a second call when items already exist
+        does nothing.
         """
-        self.cargar()
+        # PersistenciaJson isolates corrupt files and logs via
+        # _LOGGER.warning before raising. Suppress here and fall
+        # back to preset.seed below (Tarea 3.1, L-03).
+        with suppress(PersistenciaError):
+            self.cargar()
         if not self._items:
             for datos in self._preset.seed:
                 item = Item.from_dict(datos)

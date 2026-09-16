@@ -61,3 +61,6 @@ traspaso_*.md
 # Build artifacts
 *.whl
 *.tar.bz2
+
+# Persistence forensic artifacts (Tarea 3.1, L-03)
+data/*.corrupt-*
