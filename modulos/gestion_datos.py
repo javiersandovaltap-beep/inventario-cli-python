@@ -1,6 +1,6 @@
 """CRUD operations on Inventario instances, preserving CLI interaction."""
 
-from modulos.funciones_utiles import validar_input_flotante, validar_input_numero
+from modulos.funciones_utiles import generar_id, validar_input_flotante, validar_input_numero
 from modulos.inventario import Inventario
 from modulos.item import Item
 
@@ -57,7 +57,7 @@ def agregar_libro(inventario: Inventario) -> None:
     precio = validar_input_flotante("Precio (CLP): $", min_val=0.0)
     stock = validar_input_numero("Stock inicial: ", min_val=0)
 
-    nuevo_id = max(inventario._ids) + 1 if inventario._ids else 1
+    nuevo_id = generar_id(inventario._ids)
     nuevo_item = Item(
         id=nuevo_id,
         sku=isbn,

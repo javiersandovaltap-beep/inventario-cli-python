@@ -141,7 +141,7 @@ inventario-cli-python/
 |   +-- gestion_datos.py                  # Funciones CLI CRUD (presentation)
 |   +-- menu.py                           # mostrar_menu + pedir_opcion
 |   +-- validaciones.py                   # Place-holder (Fase 3: input validators)
-|   +-- funciones_utiles.py               # input_float, generar_id_recursivo
+|   +-- funciones_utiles.py               # input_float, generar_id
 +-- presets/
 |   +-- __init__.py
 |   +-- base.py                           # Preset Protocol

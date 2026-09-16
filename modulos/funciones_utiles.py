@@ -11,6 +11,7 @@ def validar_input_numero(prompt, min_val=None, max_val=None):
 
     Returns:
         int: Número entero válido dentro del rango especificado.
+
     """
     while True:
         try:
@@ -35,6 +36,7 @@ def validar_input_flotante(prompt, min_val=0.0):
 
     Returns:
         float: Número decimal válido mayor o igual al mínimo.
+
     """
     while True:
         try:
@@ -47,16 +49,21 @@ def validar_input_flotante(prompt, min_val=0.0):
             print("Error: Ingrese un valor numérico válido (ej. 15000.50).")
 
 
-def generar_id_recursivo(ids_set, current_id=1):
-    """Genera un ID único de forma recursiva que no exista en el conjunto dado.
+def generar_id(ids_en_uso: set[int]) -> int:
+    """Genera un ID unico iterativamente que no exista en el conjunto dado.
+
+    Resuelve L-04: la version anterior recursiva no era de cola y causaba
+    stack overflow en IDs grandes. Implementacion iterativa con while
+    loop, O(n) worst case donde n es el tamano del conjunto.
 
     Args:
-        ids_set (set): Conjunto de IDs ya utilizados.
-        current_id (int): ID candidato a evaluar. Por defecto 1.
+        ids_en_uso: Conjunto de IDs ya utilizados.
 
     Returns:
-        int: Primer ID entero positivo no presente en ids_set.
+        Primer ID entero positivo (>=1) no presente en ids_en_uso.
+
     """
-    if current_id in ids_set:
-        return generar_id_recursivo(ids_set, current_id + 1)
-    return current_id
+    candidato = 1
+    while candidato in ids_en_uso:
+        candidato += 1
+    return candidato
