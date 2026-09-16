@@ -1,0 +1,81 @@
+# .dockerignore for inventario-cli-python
+# Excludes files not needed in the Docker build context.
+# Reduces context size + prevents cache/copy pollution.
+
+# Version control
+.git/
+
+# CI/CD config (not needed in image context)
+.github/
+
+# Python caches and build artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Test artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+coverage.xml
+*.coverage.*
+
+# Lint/type caches
+.mypy_cache/
+.ruff_cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment variables (secrets)
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Local Claude Code state (gitignored in repo)
+.claude/
+
+# Session handovers (gitignored in repo)
+traspaso_*.md
+
+# Archives (gitignored in repo)
+*.rar
+*.zip
+*.7z
+*.tar
+*.tar.gz
+
+# Build artifacts (gitignored in repo)
+*.whl
+*.tar.bz2
+
+# Tests directory (forward-compat: tests/ does not exist yet, Fase 4)
+tests/
+
+# Docs directory (forward-compat: docs/ does not exist yet, Fase 5)
+docs/
+
+# Project manuals (live in user's Downloads, not in repo; exclude just in case)
+workflow_gitbash*.md
+roadmap_*.md
