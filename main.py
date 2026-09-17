@@ -5,8 +5,6 @@ Constructs the Inventario instance with injected persistence and preset,
 loads initial data, and runs the menu loop.
 """
 
-import sys
-
 from modulos.gestion_datos import (
     actualizar_stock,
     agregar_libro,
@@ -49,7 +47,7 @@ def main() -> None:
 
         if opcion == 0:
             print("\n¡Hasta pronto! Cerrando el sistema...\n")
-            sys.exit(0)
+            break
 
         opciones[opcion]()
 
